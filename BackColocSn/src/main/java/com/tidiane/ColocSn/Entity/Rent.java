@@ -3,7 +3,6 @@ import java.time.LocalDateTime;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Rent {
@@ -12,18 +11,16 @@ public class Rent {
     private double pricePerMonth;
     private RentStatus status;
     private String description;
-    @ManyToOne private User owner;
+    private String ownerId;
     private LocalDateTime creationDate;
 
     Rent(){} //Empty constructor for jpa
 
-    Rent(String title, double pricePerMonth, RentStatus status, String description, User owner, LocalDateTime creationDate){
+    Rent(String title, double pricePerMonth, RentStatus status, String description){
         this.title = title;
         this.pricePerMonth = pricePerMonth;
         this.status = status.AVAILABLE;
         this.description = description;
-        this.owner = owner;
-        this.creationDate = creationDate.now();
     }
 
     public Long getRentId() {
@@ -58,11 +55,11 @@ public class Rent {
         return description;
     }
 
-    public void setOwner(User owner) {
-        this.owner= owner;
+    public void setOwnerId(String ownerId) {
+        this.ownerId= ownerId;
     }
-    public User getOwnerId() {
-        return owner;
+    public String getOwnerId() {
+        return ownerId;
     }
 
     public void setCreationDate(LocalDateTime creationDate) {

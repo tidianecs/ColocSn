@@ -26,7 +26,7 @@ public class SecurityConfig {
         .requestMatchers("/api/v1/rents/**").authenticated()
         .anyRequest().permitAll()
       )
-      .oauth2ResourceServer(oauth2 -> oauth2.jwt()); // -> nécessite issuer-uri ou jwk-set-uri
+      .oauth2ResourceServer(oauth2 -> oauth2.jwt());
     return http.build();
   }
 

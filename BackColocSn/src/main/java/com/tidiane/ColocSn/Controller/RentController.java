@@ -1,8 +1,10 @@
 package com.tidiane.ColocSn.Controller;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,10 +23,10 @@ public class RentController {
     @Autowired RentRepository repository;
     @Autowired RentService service;
 
-    Jwt jwt;
-
     @PostMapping
-    public Rent createRent(@RequestBody Rent rent){
+    public Rent createRent(@RequestBody Rent rent, @AuthenticationPrincipal Jwt jwt, LocalDateTime createdAt){
+        rent.setOwnerId(jwt.getSubject());
+        rent.setCreationDate(createdAt);
         return repository.save(rent);
     }
 
@@ -39,12 +41,12 @@ public class RentController {
     }
 
     @GetMapping("/mine")
-    public List<Rent> myRents(){
-        return repository.findByOwner_UserId(service.userIdJwt(jwt));
+    public List<Rent> myRents(@AuthenticationPrincipal Jwt jwt){
+        return repository.findByOwnerId(service.userIdJwt(jwt));
     }
 
-    @DeleteMapping
-    public void delRent(@RequestBody Rent rent){
-        repository.delete(rent);
+    @DeleteMapping("/{id}")
+    public void delRent(@PathVariable Long id){
+        repository.deleteById(id);
     }
 }
