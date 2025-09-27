@@ -63,7 +63,7 @@ public class Rent {
     }
 
     public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
+        this.creationDate = creationDate.now();
     }
     public LocalDateTime getCreationDate() {
         return creationDate;
